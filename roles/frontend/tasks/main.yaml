@@ -4,7 +4,7 @@
       state: installed
     
   - name: enable and start nginx service
-    ansible.builtin.systemd_service:
+    ansible.builtin.service:
       name: nginx
       state: started
       enabled: yes
@@ -30,10 +30,10 @@
       dest: /usr/share/nginx/html
       remote_src: yes
 
-  - name: copy frontend service
+  - name: copy expense config
     ansible.builtin.template:
       src: expense.conf.j2
       dest: /etc/nginx/default.d/expense.conf
     notify: 
-    - Restart Nginx
+     - Restart Nginx
 
