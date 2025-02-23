@@ -3,7 +3,7 @@ Description = Backend Service
 
 [Service]
 User=expense
-Environment=DB_HOST="{{ MYSQL_HOST }}"
+Environment=DB_HOST="{{ mysql.lokeshportfo.site }}"
 ExecStart=/bin/node /app/index.js
 SyslogIdentifier=backend
 
