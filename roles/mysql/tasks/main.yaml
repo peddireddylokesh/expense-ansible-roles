@@ -24,7 +24,7 @@
   register: mysql_info
   ignore_errors: true
 
-- name: Print MySQL connection info
+- name: Print MySQL connection output
   ansible.builtin.debug:
     msg: "MySQL info: {{ mysql_info }}"
 
@@ -36,5 +36,4 @@
     login_password: "ExpenseApp@1"
     login_host: mysql.lokeshportfo.site
     state: present
-    host: "%"
   when: mysql_info.failed is true
