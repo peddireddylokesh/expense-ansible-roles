@@ -46,8 +46,8 @@
     path: /app
 
 - name: copy backend service
-  ansible.builtin.copy:
-    src: backend.service
+  ansible.builtin.template:
+    src: backend.service.j2
     dest: /etc/systemd/system/backend.service
 
 - name: import mysql data
