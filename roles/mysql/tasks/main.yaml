@@ -1,43 +1,40 @@
-- name: configuring mysql-server
-  hosts: mysql
-  become: true
-  vars:
-    mysql_root_password: ExpenseApp@1
-  tasks:
-  - name: install mysql libraries PyMySQL 3.9
-    ansible.builtin.pip:
-      name: "{{ item }}"
-      executable: pip3.9
-    loop: 
-    - cryptography
-    - PyMySQL
+- name: Install MySQL libraries (PyMySQL)
+  ansible.builtin.pip:
+    name:
+      - cryptography
+      - PyMySQL
+    executable: pip3
 
-  - name: installing mysql server
-    ansible.builtin.package:
-      name: mysql-server
-      state: installed
+- name: Install MySQL Server
+  ansible.builtin.package:
+    name: mysql-server
+    state: present
 
-  - name: start and enable mysql-server
-    ansible.builtin.service:
-      name: mysql
-      state: started
-      enabled: yes
+- name: Start and enable MySQL service
+  ansible.builtin.service:
+    name: mysqld  # Fixes service name (should be mysqld)
+    state: started
+    enabled: yes
 
-  - name: connect to mysql server
-    community.mysql.mysql_info:
-      login_user: root
-      login_password: "{{ mysql_root_password }}"
-      login_host: mysql.lokeshportfo.site
-    register: mysql_info
-    ignore_errors: true
-      
-  - name: print the output
-    ansible.builtin.debug:
-      msg: "mysql info {{ mysql_info }}"
+- name: Check MySQL connection
+  community.mysql.mysql_info:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_host: mysql.lokeshportfo.site
+  register: mysql_info
+  ignore_errors: true
 
-  - name: setup root password
-    ansible.builtin.command: " mysql_secure_installation --set-root-pass {{ mysql_root_password }} "
-    when: mysql_info.failed is true
+- name: Print MySQL connection info
+  ansible.builtin.debug:
+    msg: "MySQL info: {{ mysql_info }}"
 
-   
-
+- name: Secure MySQL - Set root password
+  community.mysql.mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    login_user: root
+    login_password: "ExpenseApp@1"
+    login_host: mysql.lokeshportfo.site
+    state: present
+    host: "%"
+  when: mysql_info.failed is true

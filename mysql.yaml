@@ -1,6 +1,6 @@
 - name: configuring MYSQL server
   hosts: mysql
-  become: tes
+  become: yes
   roles:
-  - mysql
+    - mysql
   
