@@ -1,3 +1,5 @@
 MYSQL_HOST: mysql.lokeshportfo.site
 MYSQL_USER: root
 MYSQL_PASS: ExpenseApp@1
+APP_LOCATION: /app
+COMPONENT: backend
