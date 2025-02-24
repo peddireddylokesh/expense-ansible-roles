@@ -9,28 +9,33 @@
       state: started
       enabled: yes
 
-  - name: Remove old HTML content in directory
-    ansible.builtin.file:
-      path: /usr/share/nginx/html
-      state: absent
+  - name: inclue from common roles
+    include_role: 
+      name: common
+      tasks_from: main
+      
+  # - name: Remove old HTML content in directory
+  #   ansible.builtin.file:
+  #     path: /usr/share/nginx/html
+  #     state: absent
 
-  - name: Create new HTML directory
-    ansible.builtin.file:
-      path: /usr/share/nginx/html
-      state: directory
-      mode: '0755'
+  # - name: Create new HTML directory
+  #   ansible.builtin.file:
+  #     path: /usr/share/nginx/html
+  #     state: directory
+  #     mode: '0755'
 
-  - name: Download frontend code
-    ansible.builtin.get_url:
-      url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
-      dest: /tmp/frontend.zip
-      mode: '0644'
+  # - name: Download frontend code
+  #   ansible.builtin.get_url:
+  #     url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
+  #     dest: /tmp/frontend.zip
+  #     mode: '0644'
 
-  - name: Extract app directory into /usr/share/nginx/html
-    ansible.builtin.unarchive:
-      src: /tmp/frontend.zip
-      dest: /usr/share/nginx/html
-      remote_src: yes
+  # - name: Extract app directory into /usr/share/nginx/html
+  #   ansible.builtin.unarchive:
+  #     src: /tmp/frontend.zip
+  #     dest: /usr/share/nginx/html
+  #     remote_src: yes
 
   - name: Copy Expense Nginx config
     ansible.builtin.template:
