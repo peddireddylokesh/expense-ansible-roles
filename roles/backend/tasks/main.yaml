@@ -25,6 +25,8 @@
     name: expense
 
 - name: inclue from common roles
+  tags:
+  - deployment
   include_role: 
     name: common
     tasks_from: main
@@ -47,6 +49,8 @@
 #     remote_src: yes
 
 - name: install dependencies
+  tags:
+  - deployment
   community.general.npm:
     path: /app
 
@@ -65,6 +69,8 @@
     target: /app/schema/backend.sql
 
 - name: demon Reload and restarting service
+  tags:
+  - deployment
   ansible.builtin.systemd_service:
     enabled: true 
     state: restarted
