@@ -12,11 +12,14 @@
       name: mysql
       state: installed
 
-  - name: start and enable mysql-server
+  - name: Start and enable MySQL service
     ansible.builtin.service:
-      name: mysqld
+      name: "{{ mysql_service_name }}"
       state: started
       enabled: yes
+    vars:
+      mysql_service_name: "mysqld"  # Change to "mysql" or "mariadb" if needed
+
 
   - name: connect to mysql server
     community.mysql.mysql_info:
