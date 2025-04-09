@@ -17,6 +17,15 @@
       name: mysqld
       state: started
       enabled: yes
+  - name: Set MySQL root password using mysql_user
+    community.mysql.mysql_user:
+      name: root
+      host: localhost
+      password: "{{ mysql_root_password }}"
+      login_unix_socket: /var/lib/mysql/mysql.sock
+      state: present
+
+
 
   - name: connect to mysql server
     community.mysql.mysql_info:
@@ -29,10 +38,4 @@
   - name: print the output
     ansible.builtin.debug:
       msg: "mysql info {{ mysql_info }}"
-
-  - name: setup root password
-    ansible.builtin.command: " mysql_secure_installation --set-root-pass {{ mysql_root_password }} "
-    when: mysql_info.failed is true
-
-   
 
